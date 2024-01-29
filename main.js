@@ -58,8 +58,10 @@ const bamboos = new option("bamboos", 2, 3);
 
 const options = [panda, miniPanda1, miniPanda2, bamboo, bamboos];
 
-function placeOptionPiece(user, option) {
-  const allBoardBlocks = document.querySelectorAll(`#${user}GameBoard div`);
+let notDropped;
+
+function placeOptionPiece(user, option, startId) {
+  let allBoardBlocks = document.querySelectorAll(`#${user}GameBoard div`);
 
   let randomStartIndex;
   let currentIndex;
@@ -68,10 +70,13 @@ function placeOptionPiece(user, option) {
   let randomBoolean = Math.random() < 0.5;
 
   if (user === "computer") {
+    allBoardBlocks = document.querySelectorAll("#computerGameBoard div");
     isRotated = randomBoolean;
     findValidRandomValue();
     startIndex = randomStartIndex;
   } else if (user === "player") {
+    allBoardBlocks = document.querySelectorAll("#playerGameBoard div");
+
     if (
       draggedPiece.style.transform.includes("90deg") ||
       draggedPiece.style.transform.includes("270deg")
@@ -82,20 +87,47 @@ function placeOptionPiece(user, option) {
     }
     startIndex = startId;
   }
-
-  console.log(randomStartIndex);
+  console.log("startIndex:", startIndex);
 
   let optionBlocks = [];
 
-  for (let i = 0; i < option.width; i++) {
-    for (let j = 0; j < option.length; j++) {
-      if (isRotated) {
-        currentIndex = startIndex + i * width + j;
-      } else {
-        currentIndex = startIndex + j * width + i;
+  if (option && option.width && option.length) {
+    for (let i = 0; i < option.width; i++) {
+      for (let j = 0; j < option.length; j++) {
+        if (isRotated) {
+          optionWidth = i * width;
+          optionSize = j + optionWidth;
+          currentIndex = startIndex + optionSize;
+        } else {
+          optionWidth = j * width;
+          optionSize = i + optionWidth;
+          currentIndex = startIndex + optionSize;
+        }
+        console.log(
+          "startIndex:",
+          startIndex,
+          "i:",
+          i,
+          "j:",
+          j,
+          "width:",
+          width,
+          "optionWidth:",
+          optionWidth,
+          "optionSize:",
+          optionSize,
+          "startIndex:",
+          startIndex,
+          "currentIndex:",
+          currentIndex
+        );
+
+        optionBlocks.push(allBoardBlocks[currentIndex]);
       }
-      optionBlocks.push(allBoardBlocks[currentIndex]);
     }
+  } else {
+    console.error("Invalid option:", option);
+    return;
   }
   console.log(optionBlocks);
 
@@ -177,6 +209,7 @@ allPlayerBlocks.forEach((playerBlock) => {
 console.log(allPlayerBlocks);
 
 function dragStart(e) {
+  notDropped = false;
   draggedPiece = e.target;
 }
 
@@ -186,5 +219,15 @@ function dragOver(e) {
 
 function dropPiece(e) {
   const startId = e.target.id;
-  const piece = options[draggedPiece.id];
+  const piece = options.find((option) => option.name === draggedPiece.id);
+
+  console.log("draggedPiece.id:", draggedPiece.id);
+  console.log("piece", piece);
+
+  if (piece) {
+    placeOptionPiece("player", piece, startId);
+    if (!notDropped) {
+      draggedPiece.remove();
+    }
+  }
 }
