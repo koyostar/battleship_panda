@@ -1,0 +1,94 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background-color: black;
+  color: white;
+  font-family: "Courier New", Courier, monospace;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+h1 {
+  color: white;
+  text-align: center;
+  font-size: 50px;
+}
+
+h2 {
+  margin: 0;
+}
+
+h3 {
+  text-align: center;
+  font-size: 30px;
+}
+
+#gameInfo {
+  background-color: rgb(149, 247, 191);
+  justify-content: center;
+  margin: 10px;
+  padding: 10px;
+}
+
+.optionsContainer {
+  display: flex;
+  margin: 20px;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.controls {
+  text-align: center;
+}
+
+.option {
+  height: 150px;
+  margin: 10px 50px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+#panda {
+  width: 100px;
+  height: 100px;
+}
+#miniPanda1,
+#miniPanda2 {
+  width: 50px;
+  height: 50px;
+}
+#bamboo {
+  width: 50px;
+  height: 150px;
+}
+#bamboos {
+  width: 100px;
+  height: 150px;
+}
+
+.gameContainer {
+  display: flex;
+  margin: 20px;
+  justify-content: space-between;
+}
+
+.gameBoard {
+  width: 500px;
+  height: 500px;
+  background-color: white;
+  margin: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.block {
+  width: 50px;
+  height: 50px;
+}
+
+.taken {
+  background-color: gray;
+}
